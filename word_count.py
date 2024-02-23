@@ -89,22 +89,11 @@ def reducer (sequence):
 
 import os.path
 
-def create_ouptput_directory(output_directory):
-    if os.path.exist(output_directory):
-        raise FileExistsError(f"The directory '{output_directory}' already exist.")
+def create_output_directory(output_directory):
+    if os.path.exists(output_directory):
+        raise FileExistsError(f"The directory '{output_directory}' already exists.")
     os.makedirs(output_directory)
 
-
-
-
-
-
-sequence = load_input("input")
-sequence = mapper(sequence)
-sequence = shuffle_and_sort(sequence)
-sequence= reducer(sequence)
-create_ouptput_directory("output")
-print(sequence)
 
 #
 # Escriba la función save_output, la cual almacena en un archivo de texto llamado
@@ -115,7 +104,19 @@ print(sequence)
 # separados por un tabulador.
 #
 def save_output(output_directory, sequence):
-    pass
+    with open(output_directory + "/part-00000","w") as file:
+        for key, value in sequence:
+            file.write(f"{key}\t{value}\n")
+
+
+
+sequence = load_input("input")
+sequence = mapper(sequence)
+sequence = shuffle_and_sort(sequence)
+sequence= reducer(sequence)
+create_output_directory("output")
+save_output("output", sequence)
+
 
 
 #
