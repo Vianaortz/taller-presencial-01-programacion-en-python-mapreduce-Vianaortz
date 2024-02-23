@@ -13,9 +13,16 @@
 #     ('text2.txt'. 'hypotheses.')
 #   ]
 #
-def load_input(input_directory):
-    pass
+import glob
+import fileinput
 
+def load_input(input_directory):
+    sequence =[]
+    filenames = glob.glob(input_directory + "/*")
+    with fileinput.input(files= filenames) as f:
+        for line in f:
+            sequence.append((fileinput.filename(), line))
+    return sequence
 
 #
 # Escriba una función llamada maper que recibe una lista de tuplas de la
@@ -30,7 +37,12 @@ def load_input(input_directory):
 #   ]
 #
 def mapper(sequence):
-    pass
+    new_sequence = []
+    for _, text in sequence:
+        words = text.split()
+        for word in words:
+            new_sequence.append((word,1))
+    return new_sequence
 
 
 #
@@ -45,18 +57,36 @@ def mapper(sequence):
 #   ]
 #
 def shuffle_and_sort(sequence):
-    pass
+    sorted_sequence = sorted(sequence, key=lambda x: x[0])
+    return sorted_sequence
+    
 
 
-#
 # Escriba la función reducer, la cual recibe el resultado de shuffle_and_sort y
 # reduce los valores asociados a cada clave sumandolos. Como resultado, por
 # ejemplo, la reducción indica cuantas veces aparece la palabra analytics en el
 # texto.
 #
-def reducer(sequence):
-    pass
 
+def reducer (sequence):
+    diccionario={}
+    for key, value in sequence:
+        if key not in diccionario.keys():
+            diccionario[key]= []
+        diccionario[key].append(value)
+
+    new_sequence = []
+    for key, value in diccionario.items():
+        tupla = (key, sum(value))
+        new_sequence.append(tupla)
+    return new_sequence
+
+
+sequence = load_input("input")
+sequence = mapper(sequence)
+sequence = shuffle_and_sort(sequence)
+sequence= reducer(sequence)
+print(sequence)
 
 #
 # Escriba la función create_ouptput_directory que recibe un nombre de directorio
@@ -93,8 +123,8 @@ def job(input_directory, output_directory):
     pass
 
 
-if __name__ == "__main__":
-    job(
-        "input",
-        "output",
-    )
+# if __name__ == "__main__":
+ #   job(
+  #      "input",
+  #      "output",
+  #  )
