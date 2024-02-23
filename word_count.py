@@ -13,6 +13,7 @@
 #     ('text2.txt'. 'hypotheses.')
 #   ]
 #
+
 import glob
 import fileinput
 
@@ -66,7 +67,7 @@ def shuffle_and_sort(sequence):
 # reduce los valores asociados a cada clave sumandolos. Como resultado, por
 # ejemplo, la reducción indica cuantas veces aparece la palabra analytics en el
 # texto.
-#
+
 
 def reducer (sequence):
     diccionario={}
@@ -81,20 +82,29 @@ def reducer (sequence):
         new_sequence.append(tupla)
     return new_sequence
 
+#
+# Escriba la función create_ouptput_directory que recibe un nombre de directorio
+# y lo crea. Si el directorio existe, la función falla.
+#
+
+import os.path
+
+def create_ouptput_directory(output_directory):
+    if os.path.exist(output_directory):
+        raise FileExistsError(f"The directory '{output_directory}' already exist.")
+    os.makedirs(output_directory)
+
+
+
+
+
 
 sequence = load_input("input")
 sequence = mapper(sequence)
 sequence = shuffle_and_sort(sequence)
 sequence= reducer(sequence)
+create_ouptput_directory("output")
 print(sequence)
-
-#
-# Escriba la función create_ouptput_directory que recibe un nombre de directorio
-# y lo crea. Si el directorio existe, la función falla.
-#
-def create_ouptput_directory(output_directory):
-    pass
-
 
 #
 # Escriba la función save_output, la cual almacena en un archivo de texto llamado
