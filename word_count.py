@@ -109,14 +109,12 @@ def save_output(output_directory, sequence):
             file.write(f"{key}\t{value}\n")
 
 
-
 sequence = load_input("input")
 sequence = mapper(sequence)
 sequence = shuffle_and_sort(sequence)
 sequence= reducer(sequence)
 create_output_directory("output")
 save_output("output", sequence)
-
 
 
 #
